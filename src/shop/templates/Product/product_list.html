@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block body %}
+<!-- Shop Section Begin -->
+    <section class="shop spad">
+        <div class="container">
+            <div class="shop__option">
+                <div class="row">
+                    <div class="col-lg-7 col-md-7">
+                        <div class="shop__option__search">
+                         <div class="header__top__inner">
+                            <div class="header__top__left">
+                                <ul>
+                                    <li>All <span class="arrow_carrot-down"></span>
+                                        <ul>
+                                        
+                                        {% for cat  in categories  %}
+                                        {% if category.slug == cat.slug %}
+                                        {% endif %}
+                                            <li><a href="{{cat.get_absolute_url}}">{{cat.CatName}}</a></li>
+                                         {% endfor %}
+                                        </ul>
+                                    </li>
+                                    
+                                   
+                                </ul>
+                            </div>
+                            
+                            
+                        </div>
+                               
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-md-5">
+                        <div class="shop__option__right">
+                            <select>
+                                <option value="">Default sorting</option>
+                                <option value="">A to Z</option>
+                                <option value="">1 - 8</option>
+                                <option value="">Name</option>
+                            </select>
+                            <a href="#"><i class="fa fa-list"></i></a>
+                            <a href="#"><i class="fa fa-reorder"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                
+                
+                {% for product in products  %}
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="product__item">
+                    {% if product.PrdImage %}
+                    <div class="product__item__pic set-bg" data-setbg="{{product.PrdImage.url}}">
+                    {% else %}
+                    <div class="product__item__pic set-bg" data-setbg="{% static 'site_static/img/shop/default.jpg' %}">
+                {% endif %}
+                
+                        
+                            <div class="product__label">
+                                <span>{{product.Prdcategory}}</span>
+                            </div>
+                        </div>
+                        <div class="product__item__text">
+                            <h6><a href="{{product.get_absolute_url}} ">{{product.PrdName}}</a></h6>
+                            <div class="product__item__price">{{product.PrdPrice}}</div>
+                            <div class="cart_add">
+                                <a href="#">Add to cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+            <div class="shop__last__option">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="shop__pagination">
+                            {% if products.has_previous %}
+                                <a href="?page={{ products.previous_page_number }}"><span class="arrow_carrot-left"></span></a>
+                                
+                            {% endif %}
+                             {% for page in products.paginator.page_range %}
+                                <a href="?page={{ page }}">{{ page }}</a>
+                             {% endfor %}
+                            
+                            
+                            {% if product_list.has_next %}
+                                <a href="?page={{ products.next_page_number }}"><span class="arrow_carrot-right"></span></a>
+                            
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="shop__last__text">
+                            <p>Showing Page {{ products.number }} of {{ products.paginator.num_pages }} results</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Shop Section End -->
+{% endblock body %}
+
+
+    
+
+   

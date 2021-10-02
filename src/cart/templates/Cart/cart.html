@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block body %}
+<!-- Shopping Cart Section Begin -->
+    <section class="shopping-cart spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="shopping__cart__table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% if cart %}
+				                {% for item in cart %}
+					            {% with  product=item.product %}
+                                <tr>
+                                    <td class="product__cart__item">
+                                        <div class="product__cart__item__pic">
+                                            {% if product.PrdImage %}
+					    					     
+                                            <img  width="90px" height="90px" src="{{product.PrdImage.url}}" alt="">
+                                            {% else %}
+                                            <img width="90px" height="90px" src="{% static 'site_static/img/shop/default.jpg' %}" alt="">
+                                            {% endif %}
+                                        </div>
+                                        <div class="product__cart__item__text">
+                                            <h6><a href="{{product.get_absolute_url}}">{{product.PrdName}}</a></h6>
+                                            <h5>${{item.price}}</h5>
+                                        </div>
+                                    </td>
+                                    <td>
+					    		<form method="post" action="{% url 'cart:cart_add' product.id %}">
+					    			{% csrf_token %}
+					    			{{item.update_quantity_form.quantity}}
+					    			{{item.update_quantity_form.update}}
+					    			<input type="submit" value="Update">
+					    		</form>
+					    	</td>
+                                    <td class="cart__price">${{item.total_price}}</td>
+                                    <td class="cart__close"><a class="icon_close" href="{% url 'cart:cart_remove' product.id%}"></a></td>
+                               {% endwith %}
+			                	{% endfor %} 
+                                {% else %}
+                                <tr >
+					                <td colspan="4" style="width:100%;text-align:center;">there is no product !</td>
+				                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="continue__btn">
+                                <a href="#">Continue Shopping</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="continue__btn update__btn">
+                                <a href="#"><i class="fa fa-spinner"></i> Update cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="cart__discount">
+                        <h6>Discount codes</h6>
+                        <form action="#">
+                            <input type="text" placeholder="Coupon code">
+                            <button type="submit">Apply</button>
+                        </form>
+                    </div>
+                    <div class="cart__total">
+                        <h6>Cart total</h6>
+                        <ul>
+                            <li>Subtotal <span>$ 169.50</span></li>
+                            <li>Total <span>$ 169.50</span></li>
+                        </ul>
+                        <a href="#" class="primary-btn">Proceed to checkout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Shopping Cart Section End -->
+{% endblock body %}
+
+
+    
+
+   
